@@ -1,0 +1,34 @@
+name: EHDP CD
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Create release package
+        run: |
+          mkdir -p release
+
+          zip -r release/EHDP-${GITHUB_REF_NAME}.zip \
+            docs \
+            pentaho \
+            python \
+            sql \
+            metadata \
+            lineage \
+            tests \
+            README.md
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: EHDP-${{ github.ref_name }}
+          path: release/EHDP-${{ github.ref_name }}.zip
