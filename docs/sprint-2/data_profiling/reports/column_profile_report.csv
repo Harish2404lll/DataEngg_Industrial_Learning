@@ -1,0 +1,163 @@
+Dataset,Column,Data Type,Non-Null Values,Null Values,Unique Values
+Patients,Id,str,1171,0,1171
+Patients,BIRTHDATE,str,1171,0,982
+Patients,DEATHDATE,str,1171,0,172
+Patients,SSN,str,1171,0,1170
+Patients,DRIVERS,str,1171,0,953
+Patients,PASSPORT,str,1171,0,899
+Patients,PREFIX,str,1171,0,4
+Patients,FIRST,str,1171,0,992
+Patients,LAST,str,1171,0,490
+Patients,SUFFIX,str,1171,0,4
+Patients,MAIDEN,str,1171,0,261
+Patients,MARITAL,str,1171,0,3
+Patients,RACE,str,1171,0,5
+Patients,ETHNICITY,str,1171,0,2
+Patients,GENDER,str,1171,0,2
+Patients,BIRTHPLACE,str,1171,0,293
+Patients,ADDRESS,str,1171,0,1171
+Patients,CITY,str,1171,0,237
+Patients,STATE,str,1171,0,1
+Patients,COUNTY,str,1171,0,14
+Patients,ZIP,str,1171,0,210
+Patients,LAT,float64,1171,0,1171
+Patients,LON,float64,1171,0,1171
+Patients,HEALTHCARE_EXPENSES,float64,1171,0,1171
+Patients,HEALTHCARE_COVERAGE,float64,1171,0,1069
+Encounters,Id,str,53346,0,53346
+Encounters,START,str,53346,0,50029
+Encounters,STOP,str,53346,0,52461
+Encounters,PATIENT,str,53346,0,1171
+Encounters,ORGANIZATION,str,53346,0,1103
+Encounters,PROVIDER,str,53346,0,1104
+Encounters,PAYER,str,53346,0,10
+Encounters,ENCOUNTERCLASS,str,53346,0,6
+Encounters,CODE,int64,53346,0,43
+Encounters,DESCRIPTION,str,53346,0,50
+Encounters,BASE_ENCOUNTER_COST,float64,53346,0,2
+Encounters,TOTAL_CLAIM_COST,float64,53346,0,2
+Encounters,PAYER_COVERAGE,float64,53346,0,15
+Encounters,REASONCODE,float64,13777,39569,80
+Encounters,REASONDESCRIPTION,str,13777,39569,80
+Conditions,START,str,8376,0,5356
+Conditions,STOP,str,4565,3811,2923
+Conditions,PATIENT,str,8376,0,1152
+Conditions,ENCOUNTER,str,8376,0,7650
+Conditions,CODE,int64,8376,0,129
+Conditions,DESCRIPTION,str,8376,0,129
+Observations,DATE,str,299697,0,29074
+Observations,PATIENT,str,299697,0,1171
+Observations,ENCOUNTER,str,269334,30363,20030
+Observations,CODE,str,299697,0,125
+Observations,DESCRIPTION,str,299697,0,129
+Observations,VALUE,str,299697,0,4822
+Observations,UNITS,str,286962,12735,34
+Observations,TYPE,str,299697,0,2
+Medications,START,str,42989,0,25996
+Medications,STOP,str,42989,0,24779
+Medications,PATIENT,str,42989,0,1107
+Medications,PAYER,str,42989,0,10
+Medications,ENCOUNTER,str,42989,0,27269
+Medications,CODE,int64,42989,0,131
+Medications,DESCRIPTION,str,42989,0,134
+Medications,BASE_COST,float64,42989,0,17728
+Medications,PAYER_COVERAGE,float64,42989,0,8681
+Medications,DISPENSES,int64,42989,0,363
+Medications,TOTALCOST,float64,42989,0,20754
+Medications,REASONCODE,str,42989,0,37
+Medications,REASONDESCRIPTION,str,42989,0,37
+Procedures,DATE,str,34981,0,20632
+Procedures,PATIENT,str,34981,0,1165
+Procedures,ENCOUNTER,str,34981,0,21072
+Procedures,CODE,int64,34981,0,137
+Procedures,DESCRIPTION,str,34981,0,144
+Procedures,BASE_COST,float64,34981,0,26461
+Procedures,REASONCODE,float64,19437,15544,42
+Procedures,REASONDESCRIPTION,str,19437,15544,42
+Allergies,START,str,597,0,141
+Allergies,STOP,str,597,0,30
+Allergies,PATIENT,str,597,0,141
+Allergies,ENCOUNTER,str,597,0,141
+Allergies,CODE,int64,597,0,15
+Allergies,DESCRIPTION,str,597,0,15
+Immunizations,DATE,str,15478,0,10162
+Immunizations,PATIENT,str,15478,0,1169
+Immunizations,ENCOUNTER,str,15478,0,10368
+Immunizations,CODE,int64,15478,0,18
+Immunizations,DESCRIPTION,str,15478,0,18
+Immunizations,BASE_COST,float64,15478,0,1
+Organizations,Id,str,1119,0,1119
+Organizations,NAME,str,1119,0,980
+Organizations,ADDRESS,str,1119,0,1006
+Organizations,CITY,str,1119,0,317
+Organizations,STATE,str,1119,0,1
+Organizations,ZIP,str,1119,0,1003
+Organizations,LAT,float64,1119,0,343
+Organizations,LON,float64,1119,0,344
+Organizations,PHONE,str,935,184,904
+Organizations,REVENUE,float64,1119,0,214
+Organizations,UTILIZATION,int64,1119,0,220
+Payers,Id,str,10,0,10
+Payers,NAME,str,10,0,10
+Payers,ADDRESS,str,10,0,8
+Payers,CITY,str,10,0,8
+Payers,STATE_HEADQUARTERED,str,10,0,7
+Payers,ZIP,str,10,0,8
+Payers,PHONE,str,10,0,9
+Payers,AMOUNT_COVERED,float64,10,0,10
+Payers,AMOUNT_UNCOVERED,float64,10,0,10
+Payers,REVENUE,float64,10,0,10
+Payers,COVERED_ENCOUNTERS,int64,10,0,10
+Payers,UNCOVERED_ENCOUNTERS,int64,10,0,7
+Payers,COVERED_MEDICATIONS,int64,10,0,5
+Payers,UNCOVERED_MEDICATIONS,int64,10,0,7
+Payers,COVERED_PROCEDURES,int64,10,0,10
+Payers,UNCOVERED_PROCEDURES,int64,10,0,7
+Payers,COVERED_IMMUNIZATIONS,int64,10,0,10
+Payers,UNCOVERED_IMMUNIZATIONS,int64,10,0,7
+Payers,UNIQUE_CUSTOMERS,int64,10,0,10
+Payers,QOLS_AVG,float64,10,0,10
+Payers,MEMBER_MONTHS,int64,10,0,10
+Providers,Id,str,5855,0,5855
+Providers,ORGANIZATION,str,5855,0,1119
+Providers,NAME,str,5855,0,5766
+Providers,GENDER,str,5855,0,2
+Providers,SPECIALITY,str,5855,0,69
+Providers,ADDRESS,str,5855,0,1006
+Providers,CITY,str,5855,0,317
+Providers,STATE,str,5855,0,1
+Providers,ZIP,str,5855,0,1003
+Providers,LAT,float64,5855,0,343
+Providers,LON,float64,5855,0,344
+Providers,UTILIZATION,int64,5855,0,221
+Payer Transitions,PATIENT,str,3801,0,983
+Payer Transitions,START_YEAR,int64,3801,0,108
+Payer Transitions,END_YEAR,int64,3801,0,97
+Payer Transitions,PAYER,str,3801,0,10
+Payer Transitions,OWNERSHIP,str,3801,0,4
+Careplans,Id,str,3483,0,3483
+Careplans,START,str,3483,0,2921
+Careplans,STOP,str,1951,1532,1634
+Careplans,PATIENT,str,3483,0,1054
+Careplans,ENCOUNTER,str,3483,0,3472
+Careplans,CODE,int64,3483,0,32
+Careplans,DESCRIPTION,str,3483,0,32
+Careplans,REASONCODE,float64,3156,327,62
+Careplans,REASONDESCRIPTION,str,3156,327,62
+Devices,START,str,78,0,78
+Devices,STOP,float64,0,78,0
+Devices,PATIENT,str,78,0,74
+Devices,ENCOUNTER,str,78,0,78
+Devices,CODE,int64,78,0,3
+Devices,DESCRIPTION,str,78,0,3
+Devices,UDI,str,78,0,78
+Imaging Studies,Id,str,855,0,855
+Imaging Studies,DATE,"datetime64[us, UTC]",855,0,737
+Imaging Studies,PATIENT,str,855,0,247
+Imaging Studies,ENCOUNTER,str,855,0,794
+Imaging Studies,BODYSITE_CODE,int64,855,0,9
+Imaging Studies,BODYSITE_DESCRIPTION,str,855,0,12
+Imaging Studies,MODALITY_CODE,str,855,0,4
+Imaging Studies,MODALITY_DESCRIPTION,str,855,0,4
+Imaging Studies,SOP_CODE,str,855,0,4
+Imaging Studies,SOP_DESCRIPTION,str,855,0,5
