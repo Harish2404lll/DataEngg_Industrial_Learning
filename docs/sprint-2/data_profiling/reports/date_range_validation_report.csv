@@ -1,0 +1,7 @@
+Dataset,Check,Invalid_Records
+Encounters,STOP before START,0
+Conditions,STOP before START,0
+Medications,STOP before START,5
+Allergies,STOP before START,0
+Careplans,STOP before START,0
+Devices,STOP before START,0

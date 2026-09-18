@@ -1,0 +1,16 @@
+Dataset,Original Records,Columns,Missing Values,Original Duplicates,Records After Cleaning,Remaining Duplicates
+Patients,1171,25,4652,0,1171,0
+Encounters,53346,15,79138,0,53346,0
+Conditions,8376,6,3811,0,8376,0
+Observations,299697,8,43098,442,299255,0
+Medications,42989,13,24129,0,42989,0
+Procedures,34981,8,31088,0,34981,0
+Allergies,597,6,533,0,597,0
+Immunizations,15478,6,0,0,15478,0
+Organizations,1119,11,184,0,1119,0
+Payers,10,21,5,0,10,0
+Providers,5855,12,0,0,5855,0
+Payer Transitions,3801,5,236,0,3801,0
+Careplans,3483,9,2186,0,3483,0
+Devices,78,7,78,0,78,0
+Imaging Studies,855,10,0,0,855,0

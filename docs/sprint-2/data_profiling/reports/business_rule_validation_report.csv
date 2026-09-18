@@ -1,0 +1,20 @@
+Dataset,Column,Rule,Violations
+Patients,HEALTHCARE_EXPENSES,Value should not be negative,0
+Encounters,BASE_ENCOUNTER_COST,Value should not be negative,0
+Encounters,TOTAL_CLAIM_COST,Value should not be negative,0
+Medications,BASE_COST,Value should not be negative,0
+Medications,TOTALCOST,Value should not be negative,0
+Procedures,BASE_COST,Value should not be negative,0
+Immunizations,BASE_COST,Value should not be negative,0
+Organizations,REVENUE,Value should not be negative,0
+Payers,AMOUNT_COVERED,Value should not be negative,0
+Payers,AMOUNT_UNCOVERED,Value should not be negative,0
+Payers,REVENUE,Value should not be negative,0
+Payers,COVERED_ENCOUNTERS,Value should not be negative,0
+Payers,UNCOVERED_ENCOUNTERS,Value should not be negative,0
+Payers,COVERED_MEDICATIONS,Value should not be negative,0
+Payers,UNCOVERED_MEDICATIONS,Value should not be negative,0
+Payers,COVERED_PROCEDURES,Value should not be negative,0
+Payers,UNCOVERED_PROCEDURES,Value should not be negative,0
+Payers,COVERED_IMMUNIZATIONS,Value should not be negative,0
+Payers,UNCOVERED_IMMUNIZATIONS,Value should not be negative,0
