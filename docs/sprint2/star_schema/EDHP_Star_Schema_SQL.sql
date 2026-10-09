@@ -1,526 +1,88 @@
--- ============================================================
--- UC18 - ENTERPRISE HEALTHCARE DATA PLATFORM
--- SPRINT 2 - STAR SCHEMA
--- PostgreSQL DATA WAREHOUSE
--- ============================================================
+-- EHDP Sprint 2: PostgreSQL analytical star schema
+-- Safe to rerun: this script does not drop existing schemas or tables.
+-- Load dimensions before facts. Use source IDs from cleaned Synthea CSVs.
+CREATE SCHEMA IF NOT EXISTS warehouse;
 
-
--- ============================================================
--- 1. CREATE WAREHOUSE SCHEMA
--- ============================================================
-
-CREATE SCHEMA IF NOT EXISTS healthcare;
-
-
--- ============================================================
--- 2. DROP EXISTING STAR SCHEMA TABLES
--- ============================================================
-
-DROP TABLE IF EXISTS warehouse.fact_warehouse CASCADE;
-DROP TABLE IF EXISTS warehouse.fact_shipment CASCADE;
-DROP TABLE IF EXISTS warehouse.fact_procurement CASCADE;
-DROP TABLE IF EXISTS warehouse.fact_order CASCADE;
-
-DROP TABLE IF EXISTS healthcare.patients CASCADE;
-DROP TABLE IF EXISTS healthcare.encounters CASCADE;
-DROP TABLE IF EXISTS healthcare.organizations CASCADE;
-DROP TABLE IF EXISTS healthcare.providers CASCADE;
-DROP TABLE IF EXISTS healthcare.payers CASCADE;
-DROP TABLE IF EXISTS healthcare.payer_transitions CASCADE;
-DROP TABLE IF EXISTS healthcare.medications CASCADE;
-DROP TABLE IF EXISTS healthcare.immunizations CASCADE;
-DROP TABLE IF EXISTS healthcare.observations CASCADE;
-DROP TABLE IF EXISTS healthcare.allergies CASCADE;
-DROP TABLE IF EXISTS healthcare.conditions CASCADE;
-DROP TABLE IF EXISTS healthcare.procedures CASCADE;
-DROP TABLE IF EXISTS healthcare.devices CASCADE;
-
-
-
--- ============================================================
--- 3. PATIENT DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.patients (
-
-    id                      VARCHAR(50) PRIMARY KEY,
-
-    birthdate               DATE,
-
-    deathdate               DATE,
-
-    ssn                     VARCHAR(11),
-
-    drivers                 VARCHAR(9),
-
-    prefix                  VARCHAR(5),
-
-    first_                  VARCHAR(20),
-
-    last_                   VARCHAR(20),
-
-    suffix                  VARCHAR(5),
-
-    maiden                  VARCHAR(20),
-
-    marital                 VARCHAR(1),
-
-    race                    VARCHAR(20),
-
-    ethnicity               VARCHAR(20),
-
-    gender                  VARCHAR(1),
-
-    address_                VARCHAR(100),
-
-    city                    VARCHAR(20),
-
-    state_                  VARCHAR(2),
-
-    county                  VARCHAR(20),
-
-    zip                     INTEGER(5),
-
-    lat                     NUMERIC(9,9),
-
-    lon                     NUMERIC(9,9),
-
-    healthcare_expenses     NUMERIC(9,9),
-
-    healthcare_coverage     NUMERIC(9,9)
-
+CREATE TABLE IF NOT EXISTS warehouse.dim_patient (
+ patient_id VARCHAR(64) PRIMARY KEY, birthdate DATE, deathdate DATE,
+ gender VARCHAR(20), race VARCHAR(100), ethnicity VARCHAR(100),
+ marital_status VARCHAR(20), city VARCHAR(150), state VARCHAR(100), postal_code VARCHAR(20)
+);
+CREATE TABLE IF NOT EXISTS warehouse.dim_organization (
+ organization_id VARCHAR(64) PRIMARY KEY, organization_name TEXT, city VARCHAR(150),
+ state VARCHAR(100), postal_code VARCHAR(20), revenue NUMERIC(18,2), utilization BIGINT
+);
+CREATE TABLE IF NOT EXISTS warehouse.dim_provider (
+ provider_id VARCHAR(64) PRIMARY KEY, organization_id VARCHAR(64), provider_name TEXT,
+ gender VARCHAR(20), specialty TEXT, city VARCHAR(150), state VARCHAR(100),
+ postal_code VARCHAR(20), utilization BIGINT,
+ CONSTRAINT fk_dim_provider_organization FOREIGN KEY (organization_id)
+ REFERENCES warehouse.dim_organization (organization_id)
+);
+CREATE TABLE IF NOT EXISTS warehouse.dim_payer (
+ payer_id VARCHAR(64) PRIMARY KEY, payer_name TEXT, state_headquartered VARCHAR(100),
+ amount_covered NUMERIC(18,2), amount_uncovered NUMERIC(18,2), revenue NUMERIC(18,2),
+ covered_encounters BIGINT, uncovered_encounters BIGINT
+);
+CREATE TABLE IF NOT EXISTS warehouse.dim_date (
+ date_key DATE PRIMARY KEY, calendar_year SMALLINT NOT NULL, calendar_quarter SMALLINT NOT NULL,
+ month_number SMALLINT NOT NULL, month_name VARCHAR(12) NOT NULL,
+ day_of_month SMALLINT NOT NULL, day_of_week SMALLINT NOT NULL
 );
 
-
--- ============================================================
--- 4. ORGANIZATION DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.organizations (
-
-    id                      VARCHAR(50) PRIMARY KEY,
-
-    name_                   VARCHAR(100),
-
-    address_                VARCHAR(100),
-
-    city                    VARCHAR(20),
-
-    state_                  VARCHAR(2),
-
-    zip                     INTEGER(5),
-
-    lat                     NUMERIC(9,9),
-
-    lon                     NUMERIC(9,9),
-
-    phone                   INTEGER(10),
-
-    revenue                 NUMERIC(9,9),
-
-    utilization             INTEGER(8)
-
+-- Grain: one row per source encounter (encounters.csv Id).
+CREATE TABLE IF NOT EXISTS warehouse.fact_encounter (
+ encounter_id VARCHAR(64) PRIMARY KEY, encounter_date DATE,
+ patient_id VARCHAR(64) NOT NULL, organization_id VARCHAR(64),
+ provider_id VARCHAR(64), payer_id VARCHAR(64), encounter_class VARCHAR(100),
+ encounter_code VARCHAR(64), encounter_description TEXT,
+ base_encounter_cost NUMERIC(18,2), total_claim_cost NUMERIC(18,2),
+ payer_coverage NUMERIC(18,2), reason_code VARCHAR(64), reason_description TEXT,
+ encounter_count SMALLINT NOT NULL DEFAULT 1,
+ CONSTRAINT fk_fact_encounter_patient FOREIGN KEY (patient_id)
+ REFERENCES warehouse.dim_patient (patient_id),
+ CONSTRAINT fk_fact_encounter_organization FOREIGN KEY (organization_id)
+ REFERENCES warehouse.dim_organization (organization_id),
+ CONSTRAINT fk_fact_encounter_provider FOREIGN KEY (provider_id)
+ REFERENCES warehouse.dim_provider (provider_id),
+ CONSTRAINT fk_fact_encounter_payer FOREIGN KEY (payer_id)
+ REFERENCES warehouse.dim_payer (payer_id),
+ CONSTRAINT fk_fact_encounter_date FOREIGN KEY (encounter_date)
+ REFERENCES warehouse.dim_date (date_key)
 );
 
-
--- ============================================================
--- 5. PROVIDERS DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.providers (
-
-    id                      VARCHAR(50) PRIMARY KEY,
-
-    organization_id         VARCHAR(50),
-
-    name_                   VARCHAR(100),
-
-    gender                  VARCHAR(1),
-
-    speciality              VARCHAR(30),
-
-    address_                VARCHAR(100),
-
-    city                    VARCHAR(20),
-
-    state_                  VARCHAR(2),
-
-    zip                     INTEGER(5),
-
-    lat                     VARCHAR(50),
-
-    lon                     VARCHAR(100),
-
-    utilization             VARCHAR(255),
-
-    FOREIGN KEY (organization_id) REFERENCES healthcare.organizations(id);
-
+-- Grain: one row per source observation/lab result.
+CREATE TABLE IF NOT EXISTS warehouse.fact_observation (
+ observation_key BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+ observation_date DATE, patient_id VARCHAR(64) NOT NULL, encounter_id VARCHAR(64),
+ observation_code VARCHAR(64), description TEXT, value_text TEXT,
+ value_numeric NUMERIC(20,6), units VARCHAR(100), observation_type VARCHAR(100),
+ CONSTRAINT fk_fact_observation_patient FOREIGN KEY (patient_id)
+ REFERENCES warehouse.dim_patient (patient_id),
+ CONSTRAINT fk_fact_observation_encounter FOREIGN KEY (encounter_id)
+ REFERENCES warehouse.fact_encounter (encounter_id),
+ CONSTRAINT fk_fact_observation_date FOREIGN KEY (observation_date)
+ REFERENCES warehouse.dim_date (date_key)
 );
 
-
--- ============================================================
--- 6. PAYERS DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.payers (
-
-    id                      VARCHAR(50) PRIMARY KEY,
-
-    name_                   VARCHAR(20),
-
-    address_                VARCHAR(100),
-
-    city                    VARCHAR(20),
-
-    state_headquartered     VARCHAR(2),
-
-    zip                     INTEGER(5),
-
-    phone                   VARCHAR(14),
-
-    amount_covered          NUMERIC(8,3),
-
-    amount_uncovered        NUMERIC(8,3),
-
-    revenue                 INTEGER(9),
-
-    covered_encounters      INTEGER(6),
-
-    uncovered_encounters    INTEGER(6),
-
-    covered_medications     INTEGER(6),
-
-    uncovered_medications   INTEGER(6),
-
-    covered_procedures      INTEGER(6),
-
-    uncovered_procedures    INTEGER(6),
-
-    covered_immunizations   INTEGER(6),
-
-    uncovered_immunizations INTEGER(6),
-
-    unique_customers        INTEGER(5),
-
-    qols_average            NUMERIC(2,9),
-
-    member_months           INTEGER(6)
-
-);
-
-
--- ============================================================
--- 7. PAYER TRANSITIONS DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.payer_transitions (
-
-    patient_id              VARCHAR,
-
-    start_year              YEAR(4),
-
-    end_year                YEAR(4),
-
-    payer_id                VARCHAR,
-
-    ownership_              VARCHAR(15),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (payer_id) REFERENCES healthcare.payers(id),
-);
-
-
--- ============================================================
--- 8. ENCOUNTERS DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.encounters (
-
-    id                      VARCHAR(50) PRIMARY KEY,
-
-    start_                  DATE,
-
-    end_                    DATE,
-
-    patient_id              VARCHAR,
-
-    organization_id         VARCHAR,
-
-    provider_id             VARCHAR,
-
-    payer_id                VARCHAR,
-
-    encounterclass          VARCHAR(20),
-
-    code                    INTEGER(9) NOT NULL,
-
-    description_            VARCHAR(50),
-
-    base_encounter_cost     NUMERIC(8,3),
-
-    total_claim_cost        NUMERIC(8,3),
-
-    payer_coverage          NUMERIC(8,3),
-
-    reasoncode              INTEGER(9),
-
-    reasondescription       VARCHAR(50),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (organization_id) REFERENCES healthcare.organizations(id),
-    FOREIGN KEY (provider_id) REFERENCES healthcare.providers(id),
-    FOREIGN KEY (payer_id) REFERENCES healthcare.payers(id)
-
-);
-
-
--- ============================================================
--- 9. MEDICATIONS DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.medications (
-
-    start_                     DATE,
-
-    stop_                      DATE,
-
-    patient_id                 VARCHAR,
-
-    payer_id                   VARCHAR,
-
-    encounter_id               VARCHAR,
-
-    code                       INTEGER(9) NOT NULL,
-
-    description_               VARCHAR(50),
-
-    base_cost                  NUMERIC(8,3),
-
-    payer_coverage             NUMERIC(8,3),
-
-    dispenses                  INTEGER(3),
-
-    totalcost                  NUMERIC(8,3),
-
-    reasoncode                 INTEGER(9),
-
-    reasondescription          VARCHAR(50)
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (payer_id) REFERENCES healthcare.payers(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id)
-
-);
-
-
--- ============================================================
--- 10. CONDITIONS DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.conditions (
-
-    start_                  DATE NOT NULL,
-
-    stop_                   DATE,
-
-    patient_id              VARCHAR,
-
-    encounter_id            VARCHAR,
-
-    code                    INTEGER(9) NOT NULL,
-
-    description_            VARCHAR(50),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id)
-
-);
-
-
--- ============================================================
--- 11. ALLERGIES DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.allergies (
-
-    start_                      DATE NOT NULL,
-
-    stop_                       DATE,
-
-    patient_id                  VARCHAR,
-
-    encounter_id                VARCHAR,
-
-    code                        INTEGER(9) NOT NULL,
-
-    description_                VARCHAR(50),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id)
-
-);
-
-
--- ============================================================
--- 12. OBSERVATIONS DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.observations (
-
-    date_                   DATE NOT NULL,
-
-    patient_id              VARCHAR,
-
-    encounter_id            VARCHAR,
-
-    code                    VARCHAR(9) NOT NULL,
-
-    description_            VARCHAR(50),
-
-    value_                  NUMERIC(5,4),
-
-    units                   VARCHAR(10),
-
-    type_                   VARCHAR(12),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id)
-
-);
-
-
--- ============================================================
--- 13. PROCEDURES DIMENSION
--- ============================================================
-
-CREATE TABLE healthcare.procedures (
-
-    date_                       DATE NOT NULL,
-
-    patient_id                  VARCHAR,
-
-    encounter_id                VARCHAR,
-
-    code                        INTEGER(9) NOT NULL,
-
-    description_                VARCHAR(50),
-
-    base_cost                   NUMERIC(8,3),
-
-    reasoncode                  INTEGER(9),
-
-    reasondescription           VARCHAR(50),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id),
-
-);
-
-
--- ============================================================
--- 14. IMAGING_STUDIES DIMENSIONS
--- ============================================================
-
-CREATE TABLE healthcare.imaging_studies (
-
-    id                            VARCHAR(50) PRIMARY KEY,
-
-    date_                         DATE,
-
-    patient_id                    VARCHAR,
-
-    encounter_id                  VARCHAR,
-
-    bodysite_code                 INTEGER(9),
-
-    bodysite_description          VARCHAR(20),
-
-    modality_code                 VARCHAR(2),
-
-    modality_description          VARCHAR(20),
-
-    sop_code                      VARCHAR(50),
-
-    sop_description               VARCHAR(50),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id)
-
-);
-
--- ============================================================
--- 15. DEVICES DIMENSIONS
--- ============================================================
-
-CREATE TABLE healthcare.devices (
-
-    start_                        DATE,
-
-    stop_                         DATE,
-
-    patient_id                    VARCHAR,
-
-    encounter_id                  VARCHAR,
-
-    code                          INTEGER(9) NOT NULL,
-
-    description_                  VARCHAR(50),
-
-    udi                           VARCHAR(100),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id)
-
-)
-
--- ============================================================
--- 16. IMMUNIZATIONS DIMENSIONS
--- ============================================================
-
-CREATE TABLE healthcare.immunizations (
-
-    date_                         DATE,
-
-    patient_id                    VARCHAR,
-
-    encounter_id                  VARCHAR,
-
-    code                          INTEGER(5) NOT NULL,
-
-    description_                  VARCHAR(50),
-
-    base_cost                     NUMERIC(8,3),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id)
-
-)
-
--- ============================================================
--- 17. CAREPLANS DIMENSIONS
--- ============================================================
-
-CREATE TABLE healthcare.careplans (
-
-    id                            VARCHAR(50) PRIMARY KEY,
-
-    start_                        DATE NOT NULL,
-
-    stop_                         DATE,
-
-    patient_id                    VARCHAR,
-
-    encounter_id                  VARCHAR,
-
-    code                          INTEGER(20),
-
-    description_                  VARCHAR(50),
-
-    reasoncode                    INTEGER(9),
-
-    reasondescription             VARCHAR(50),
-
-    FOREIGN KEY (patient_id) REFERENCES healthcare.patients(id),
-    FOREIGN KEY (encounter_id) REFERENCES healthcare.encounters(id)
-
-)
+CREATE INDEX IF NOT EXISTS ix_fact_encounter_patient ON warehouse.fact_encounter (patient_id);
+CREATE INDEX IF NOT EXISTS ix_fact_encounter_date ON warehouse.fact_encounter (encounter_date);
+CREATE INDEX IF NOT EXISTS ix_fact_encounter_payer ON warehouse.fact_encounter (payer_id);
+CREATE INDEX IF NOT EXISTS ix_fact_observation_patient ON warehouse.fact_observation (patient_id);
+CREATE INDEX IF NOT EXISTS ix_fact_observation_date ON warehouse.fact_observation (observation_date);
+
+-- Optional date-dimension seed from staging, if that table already exists.
+-- Confirm your staging column names before running this block.
+DO $$
+BEGIN
+ IF to_regclass('staging.encounters') IS NOT NULL THEN
+  INSERT INTO warehouse.dim_date
+   (date_key, calendar_year, calendar_quarter, month_number, month_name, day_of_month, day_of_week)
+  SELECT DISTINCT start::date, EXTRACT(YEAR FROM start)::smallint,
+   EXTRACT(QUARTER FROM start)::smallint, EXTRACT(MONTH FROM start)::smallint,
+   TO_CHAR(start::date, 'FMMonth'), EXTRACT(DAY FROM start)::smallint,
+   EXTRACT(ISODOW FROM start)::smallint
+  FROM staging.encounters WHERE start IS NOT NULL
+  ON CONFLICT (date_key) DO NOTHING;
+ END IF;
+END $$;
