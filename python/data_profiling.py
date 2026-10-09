@@ -200,6 +200,18 @@ def make_reports(datasets):
                 "Invalid Nonblank Dates": invalid, "Missing Dates": missing,
             })
 
+        if "START" in frame.columns and "STOP" in frame.columns:
+            start_dates = pd.to_datetime(frame["START"], errors="coerce")
+            stop_dates = pd.to_datetime(frame["STOP"], errors="coerce")
+            invalid_range = int((
+                start_dates.notna() & stop_dates.notna() & (stop_dates < start_dates)
+            ).sum())
+            date_range_rows.append({
+                "Dataset": name,
+                "Check": "STOP before START",
+                "Invalid_Records": invalid_range,
+            })
+
         for column in frame.columns:
             upper_name = column.upper()
             if any(keyword in upper_name for keyword in NON_NEGATIVE_KEYWORDS):
