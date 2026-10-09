@@ -1,0 +1,54 @@
+source_file,source_column,target_table,target_column,transformation_or_rule
+patients.json,Id,warehouse.dim_patient,patient_id,Trim whitespace; preserve source ID as text
+patients.json,BIRTHDATE,warehouse.dim_patient,birthdate,Parse as date; invalid nonblank values reported
+patients.json,DEATHDATE,warehouse.dim_patient,deathdate,Parse as date; missing death date remains NULL
+patients.json,GENDER,warehouse.dim_patient,gender,Uppercase and map MALE to M and FEMALE to F
+patients.json,RACE,warehouse.dim_patient,race,Trim whitespace and title case
+patients.json,ETHNICITY,warehouse.dim_patient,ethnicity,Trim whitespace and title case
+patients.json,MARITAL,warehouse.dim_patient,marital_status,Uppercase and trim
+patients.json,CITY,warehouse.dim_patient,city,Trim whitespace and title case
+patients.json,STATE,warehouse.dim_patient,state,Trim whitespace and title case
+patients.json,ZIP,warehouse.dim_patient,postal_code,Store as text to preserve leading zeros
+organizations.csv,Id,warehouse.dim_organization,organization_id,Trim whitespace; preserve source ID as text
+organizations.csv,NAME,warehouse.dim_organization,organization_name,Trim whitespace
+organizations.csv,CITY,warehouse.dim_organization,city,Trim whitespace
+organizations.csv,STATE,warehouse.dim_organization,state,Trim whitespace
+organizations.csv,ZIP,warehouse.dim_organization,postal_code,Store as text to preserve leading zeros
+organizations.csv,REVENUE,warehouse.dim_organization,revenue,Convert to numeric; negative values are flagged for review
+organizations.csv,UTILIZATION,warehouse.dim_organization,utilization,Convert to whole number when valid
+providers.csv,Id,warehouse.dim_provider,provider_id,Trim whitespace; preserve source ID as text
+providers.csv,ORGANIZATION,warehouse.dim_provider,organization_id,Match to dim_organization.organization_id
+providers.csv,NAME,warehouse.dim_provider,provider_name,Trim whitespace
+providers.csv,GENDER,warehouse.dim_provider,gender,Uppercase and trim
+providers.csv,SPECIALITY,warehouse.dim_provider,specialty,Trim whitespace
+providers.csv,ZIP,warehouse.dim_provider,postal_code,Store as text to preserve leading zeros
+providers.csv,UTILIZATION,warehouse.dim_provider,utilization,Convert to whole number when valid
+payers.json,Id,warehouse.dim_payer,payer_id,Trim whitespace; preserve source ID as text
+payers.json,NAME,warehouse.dim_payer,payer_name,Trim whitespace
+payers.json,STATE_HEADQUARTERED,warehouse.dim_payer,state_headquartered,Trim whitespace
+payers.json,AMOUNT_COVERED,warehouse.dim_payer,amount_covered,Convert to numeric; negative values flagged
+payers.json,AMOUNT_UNCOVERED,warehouse.dim_payer,amount_uncovered,Convert to numeric; negative values flagged
+payers.json,REVENUE,warehouse.dim_payer,revenue,Convert to numeric; negative values flagged
+encounters.csv,Id,warehouse.fact_encounter,encounter_id,Primary key; one fact row per encounter
+encounters.csv,START,warehouse.fact_encounter,encounter_date,Parse date; date must exist in dim_date
+encounters.csv,PATIENT,warehouse.fact_encounter,patient_id,Match to dim_patient.patient_id
+encounters.csv,ORGANIZATION,warehouse.fact_encounter,organization_id,Match to dim_organization.organization_id
+encounters.csv,PROVIDER,warehouse.fact_encounter,provider_id,Match to dim_provider.provider_id
+encounters.csv,PAYER,warehouse.fact_encounter,payer_id,Match to dim_payer.payer_id; null allowed
+encounters.csv,ENCOUNTERCLASS,warehouse.fact_encounter,encounter_class,Trim whitespace
+encounters.csv,CODE,warehouse.fact_encounter,encounter_code,Store clinical code as text
+encounters.csv,DESCRIPTION,warehouse.fact_encounter,encounter_description,Trim whitespace
+encounters.csv,BASE_ENCOUNTER_COST,warehouse.fact_encounter,base_encounter_cost,Convert to numeric
+encounters.csv,TOTAL_CLAIM_COST,warehouse.fact_encounter,total_claim_cost,Convert to numeric
+encounters.csv,PAYER_COVERAGE,warehouse.fact_encounter,payer_coverage,Convert to numeric
+encounters.csv,REASONCODE,warehouse.fact_encounter,reason_code,Store clinical code as text
+encounters.csv,REASONDESCRIPTION,warehouse.fact_encounter,reason_description,Trim whitespace
+observations.csv,DATE,warehouse.fact_observation,observation_date,Parse date; date must exist in dim_date
+observations.csv,PATIENT,warehouse.fact_observation,patient_id,Match to dim_patient.patient_id
+observations.csv,ENCOUNTER,warehouse.fact_observation,encounter_id,Match to fact_encounter.encounter_id; null allowed
+observations.csv,CODE,warehouse.fact_observation,observation_code,Store clinical code as text
+observations.csv,DESCRIPTION,warehouse.fact_observation,description,Trim whitespace
+observations.csv,VALUE,warehouse.fact_observation,value_text,Retain original observation value as text
+observations.csv,VALUE,warehouse.fact_observation,value_numeric,Parse numeric values; nonnumeric values remain NULL here
+observations.csv,UNITS,warehouse.fact_observation,units,Trim whitespace
+observations.csv,TYPE,warehouse.fact_observation,observation_type,Trim whitespace
