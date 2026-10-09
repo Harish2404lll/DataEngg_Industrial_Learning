@@ -1,0 +1,12 @@
+Dataset,Reference Type,Invalid References
+Conditions,ENCOUNTER,0
+Observations,ENCOUNTER,0
+Medications,ENCOUNTER,0
+Procedures,ENCOUNTER,0
+Allergies,ENCOUNTER,0
+Immunizations,ENCOUNTER,0
+Careplans,ENCOUNTER,0
+Devices,ENCOUNTER,0
+Imaging Studies,ENCOUNTER,0
+Encounters,ORGANIZATION,0
+Providers,ORGANIZATION,0
