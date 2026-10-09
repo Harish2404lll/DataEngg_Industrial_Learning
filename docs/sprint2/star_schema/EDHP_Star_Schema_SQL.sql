@@ -85,4 +85,14 @@ BEGIN
   FROM staging.encounters WHERE start IS NOT NULL
   ON CONFLICT (date_key) DO NOTHING;
  END IF;
-END $$;
+ IF to_regclass('staging.observations') IS NOT NULL THEN
+  INSERT INTO warehouse.dim_date
+   (date_key, calendar_year, calendar_quarter, month_number, month_name, day_of_month, day_of_week)
+  SELECT DISTINCT date::date, EXTRACT(YEAR FROM date)::smallint,
+   EXTRACT(QUARTER FROM date)::smallint, EXTRACT(MONTH FROM date)::smallint,
+   TO_CHAR(date::date, 'FMMonth'), EXTRACT(DAY FROM date)::smallint,
+   EXTRACT(ISODOW FROM date)::smallint
+  FROM staging.observations WHERE date IS NOT NULL
+  ON CONFLICT (date_key) DO NOTHING;
+ END IF;
+END $;
