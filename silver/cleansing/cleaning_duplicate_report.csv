@@ -1,0 +1,16 @@
+Dataset,Records Before,Records After,Duplicates Removed
+Patients,1171,1171,0
+Encounters,53346,53346,0
+Conditions,8376,8376,0
+Observations,299697,299255,442
+Medications,42989,42989,0
+Procedures,34981,34981,0
+Allergies,597,597,0
+Immunizations,15478,15478,0
+Organizations,1119,1119,0
+Payers,10,10,0
+Providers,5855,5855,0
+Payer Transitions,3801,3801,0
+Careplans,3483,3483,0
+Devices,78,78,0
+Imaging Studies,855,855,0

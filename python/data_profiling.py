@@ -9,13 +9,40 @@ import matplotlib.pyplot as plt
 # ============================================================
 # 2. SET DATASET AND OUTPUT PATH
 # ============================================================
+
+# Set the project folder
+PROJECT_PATH = r"C:\DE\Project\DataEngg_Industrial_Learning"
+
+# Input datasets
 DATA_PATH = r"C:\DE\Project\dataset"
-OUTPUT_PATH = r"C:\DE\Project\dataprofiling_output"
+
+# Output folders inside the project
+OUTPUT_PATH = os.path.join(
+    PROJECT_PATH,
+    "docs",
+    "sprint2",
+    "data_profiling",
+    "reports"
+)
+
+CLEANED_PATH = os.path.join(
+    PROJECT_PATH,
+    "silver",
+    "cleansing"
+)
+
+PLOT_PATH = os.path.join(
+    PROJECT_PATH,
+    "docs",
+    "sprint2",
+    "data_profiling",
+    "visualizations"
+)
 
 os.makedirs(OUTPUT_PATH, exist_ok=True)
-
-PLOT_PATH = os.path.join(OUTPUT_PATH, "visualizations")
+os.makedirs(CLEANED_PATH, exist_ok=True)
 os.makedirs(PLOT_PATH, exist_ok=True)
+
 
 # ============================================================
 # 3. LOAD HEALTHCARE DATASETS
@@ -830,7 +857,7 @@ reports = {
 }
 
 for filename, report in reports.items():
-    report.to_csv(os.path.join(OUTPUT_PATH, filename),index=False)
+    report.to_csv(os.path.join(CLEANED_PATH, filename), index=False)
     print("Saved:", filename)
 
 # ============================================================

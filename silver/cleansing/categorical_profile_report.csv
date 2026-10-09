@@ -1,0 +1,40 @@
+Dataset,Column,Unique_Values,Mode,Mode_Frequency,Mode_Percentage,Rare_Categories_Under_1pct
+Patients,PREFIX,4,Mr.,442,37.75,0
+Patients,SUFFIX,4,,1159,98.98,3
+Patients,MARITAL,3,M,638,54.48,0
+Patients,RACE,5,white,965,82.41,1
+Patients,ETHNICITY,2,nonhispanic,1058,90.35,0
+Patients,GENDER,2,F,609,52.01,0
+Patients,STATE,1,Massachusetts,1171,100.0,0
+Patients,COUNTY,14,Middlesex County,255,21.78,2
+Encounters,PAYER,10,b1c428d6-4f07-31e0-90f0-68ffa6ff8c76,10175,19.07,0
+Encounters,ENCOUNTERCLASS,6,wellness,19106,35.82,0
+Encounters,DESCRIPTION,50,General examination of patient (procedure),14946,28.02,35
+Observations,UNITS,34,mg/dL,51907,18.09,19
+Observations,TYPE,2,numeric,278488,92.92,0
+Medications,PAYER,10,7caa7254-5050-3b5e-9eae-bd5ea30e809c,12641,29.41,0
+Medications,REASONCODE,37,59621000,11766,27.37,29
+Medications,REASONDESCRIPTION,37,Hypertension,11766,27.37,29
+Procedures,REASONDESCRIPTION,42,Normal pregnancy,14578,75.0,34
+Allergies,STOP,30,,533,89.28,29
+Allergies,DESCRIPTION,15,Allergy to mould,81,13.57,0
+Immunizations,DESCRIPTION,18,Influenza  seasonal  injectable  preservative free,9385,60.63,2
+Organizations,STATE,1,MA,1119,100.0,0
+Payers,Id,10,b3221cfc-24fb-339e-823d-bc4136cbc4ed,1,10.0,0
+Payers,NAME,10,Dual Eligible,1,10.0,0
+Payers,ADDRESS,8,7500 Security Blvd,3,30.0,0
+Payers,CITY,8,Baltimore,3,30.0,0
+Payers,STATE_HEADQUARTERED,7,MD,3,30.0,0
+Payers,ZIP,8,21244,3,30.0,0
+Payers,PHONE,9,1-877-267-2323,2,20.0,0
+Providers,GENDER,2,F,3062,52.3,0
+Providers,STATE,1,MA,5855,100.0,0
+Payer Transitions,PAYER,10,7c4411ce-02f1-39b5-b9ec-dfbea9ad3c1a,1416,37.25,1
+Payer Transitions,OWNERSHIP,4,Self,2299,60.48,0
+Careplans,DESCRIPTION,32,Respiratory therapy,633,18.17,14
+Devices,DESCRIPTION,3,Implantable defibrillator  device (physical object),47,60.26,0
+Imaging Studies,BODYSITE_DESCRIPTION,12,Thoracic structure (body structure),404,47.25,1
+Imaging Studies,MODALITY_CODE,4,CT,328,38.36,0
+Imaging Studies,MODALITY_DESCRIPTION,4,Computed Tomography,328,38.36,0
+Imaging Studies,SOP_CODE,4,1.2.840.10008.5.1.4.1.1.1.1,354,41.4,1
+Imaging Studies,SOP_DESCRIPTION,5,CT Image Storage,328,38.36,1

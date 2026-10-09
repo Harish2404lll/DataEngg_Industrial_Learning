@@ -1,0 +1,16 @@
+Dataset,Records,Columns
+Patients,1171,25
+Encounters,53346,15
+Conditions,8376,6
+Observations,299697,8
+Medications,42989,13
+Procedures,34981,8
+Allergies,597,6
+Immunizations,15478,6
+Organizations,1119,11
+Payers,10,21
+Providers,5855,12
+Payer Transitions,3801,5
+Careplans,3483,9
+Devices,78,7
+Imaging Studies,855,10

@@ -1,0 +1,163 @@
+Dataset,Column,Null Values,Empty Strings,Total Missing,Missing Percentage
+Patients,Id,0,0,0,0.0
+Patients,BIRTHDATE,0,0,0,0.0
+Patients,DEATHDATE,0,1000,1000,85.4
+Patients,SSN,0,0,0,0.0
+Patients,DRIVERS,0,213,213,18.19
+Patients,PASSPORT,0,273,273,23.31
+Patients,PREFIX,0,244,244,20.84
+Patients,FIRST,0,0,0,0.0
+Patients,LAST,0,0,0,0.0
+Patients,SUFFIX,0,1159,1159,98.98
+Patients,MAIDEN,0,840,840,71.73
+Patients,MARITAL,0,380,380,32.45
+Patients,RACE,0,0,0,0.0
+Patients,ETHNICITY,0,0,0,0.0
+Patients,GENDER,0,0,0,0.0
+Patients,BIRTHPLACE,0,0,0,0.0
+Patients,ADDRESS,0,0,0,0.0
+Patients,CITY,0,0,0,0.0
+Patients,STATE,0,0,0,0.0
+Patients,COUNTY,0,0,0,0.0
+Patients,ZIP,0,543,543,46.37
+Patients,LAT,0,0,0,0.0
+Patients,LON,0,0,0,0.0
+Patients,HEALTHCARE_EXPENSES,0,0,0,0.0
+Patients,HEALTHCARE_COVERAGE,0,0,0,0.0
+Encounters,Id,0,0,0,0.0
+Encounters,START,0,0,0,0.0
+Encounters,STOP,0,0,0,0.0
+Encounters,PATIENT,0,0,0,0.0
+Encounters,ORGANIZATION,0,0,0,0.0
+Encounters,PROVIDER,0,0,0,0.0
+Encounters,PAYER,0,0,0,0.0
+Encounters,ENCOUNTERCLASS,0,0,0,0.0
+Encounters,CODE,0,0,0,0.0
+Encounters,DESCRIPTION,0,0,0,0.0
+Encounters,BASE_ENCOUNTER_COST,0,0,0,0.0
+Encounters,TOTAL_CLAIM_COST,0,0,0,0.0
+Encounters,PAYER_COVERAGE,0,0,0,0.0
+Encounters,REASONCODE,39569,0,39569,74.17
+Encounters,REASONDESCRIPTION,39569,0,39569,74.17
+Conditions,START,0,0,0,0.0
+Conditions,STOP,3811,0,3811,45.5
+Conditions,PATIENT,0,0,0,0.0
+Conditions,ENCOUNTER,0,0,0,0.0
+Conditions,CODE,0,0,0,0.0
+Conditions,DESCRIPTION,0,0,0,0.0
+Observations,DATE,0,0,0,0.0
+Observations,PATIENT,0,0,0,0.0
+Observations,ENCOUNTER,30363,0,30363,10.13
+Observations,CODE,0,0,0,0.0
+Observations,DESCRIPTION,0,0,0,0.0
+Observations,VALUE,0,0,0,0.0
+Observations,UNITS,12735,0,12735,4.25
+Observations,TYPE,0,0,0,0.0
+Medications,START,0,0,0,0.0
+Medications,STOP,0,1895,1895,4.41
+Medications,PATIENT,0,0,0,0.0
+Medications,PAYER,0,0,0,0.0
+Medications,ENCOUNTER,0,0,0,0.0
+Medications,CODE,0,0,0,0.0
+Medications,DESCRIPTION,0,0,0,0.0
+Medications,BASE_COST,0,0,0,0.0
+Medications,PAYER_COVERAGE,0,0,0,0.0
+Medications,DISPENSES,0,0,0,0.0
+Medications,TOTALCOST,0,0,0,0.0
+Medications,REASONCODE,0,11117,11117,25.86
+Medications,REASONDESCRIPTION,0,11117,11117,25.86
+Procedures,DATE,0,0,0,0.0
+Procedures,PATIENT,0,0,0,0.0
+Procedures,ENCOUNTER,0,0,0,0.0
+Procedures,CODE,0,0,0,0.0
+Procedures,DESCRIPTION,0,0,0,0.0
+Procedures,BASE_COST,0,0,0,0.0
+Procedures,REASONCODE,15544,0,15544,44.44
+Procedures,REASONDESCRIPTION,15544,0,15544,44.44
+Allergies,START,0,0,0,0.0
+Allergies,STOP,0,533,533,89.28
+Allergies,PATIENT,0,0,0,0.0
+Allergies,ENCOUNTER,0,0,0,0.0
+Allergies,CODE,0,0,0,0.0
+Allergies,DESCRIPTION,0,0,0,0.0
+Immunizations,DATE,0,0,0,0.0
+Immunizations,PATIENT,0,0,0,0.0
+Immunizations,ENCOUNTER,0,0,0,0.0
+Immunizations,CODE,0,0,0,0.0
+Immunizations,DESCRIPTION,0,0,0,0.0
+Immunizations,BASE_COST,0,0,0,0.0
+Organizations,Id,0,0,0,0.0
+Organizations,NAME,0,0,0,0.0
+Organizations,ADDRESS,0,0,0,0.0
+Organizations,CITY,0,0,0,0.0
+Organizations,STATE,0,0,0,0.0
+Organizations,ZIP,0,0,0,0.0
+Organizations,LAT,0,0,0,0.0
+Organizations,LON,0,0,0,0.0
+Organizations,PHONE,184,0,184,16.44
+Organizations,REVENUE,0,0,0,0.0
+Organizations,UTILIZATION,0,0,0,0.0
+Payers,Id,0,0,0,0.0
+Payers,NAME,0,0,0,0.0
+Payers,ADDRESS,0,1,1,10.0
+Payers,CITY,0,1,1,10.0
+Payers,STATE_HEADQUARTERED,0,1,1,10.0
+Payers,ZIP,0,1,1,10.0
+Payers,PHONE,0,1,1,10.0
+Payers,AMOUNT_COVERED,0,0,0,0.0
+Payers,AMOUNT_UNCOVERED,0,0,0,0.0
+Payers,REVENUE,0,0,0,0.0
+Payers,COVERED_ENCOUNTERS,0,0,0,0.0
+Payers,UNCOVERED_ENCOUNTERS,0,0,0,0.0
+Payers,COVERED_MEDICATIONS,0,0,0,0.0
+Payers,UNCOVERED_MEDICATIONS,0,0,0,0.0
+Payers,COVERED_PROCEDURES,0,0,0,0.0
+Payers,UNCOVERED_PROCEDURES,0,0,0,0.0
+Payers,COVERED_IMMUNIZATIONS,0,0,0,0.0
+Payers,UNCOVERED_IMMUNIZATIONS,0,0,0,0.0
+Payers,UNIQUE_CUSTOMERS,0,0,0,0.0
+Payers,QOLS_AVG,0,0,0,0.0
+Payers,MEMBER_MONTHS,0,0,0,0.0
+Providers,Id,0,0,0,0.0
+Providers,ORGANIZATION,0,0,0,0.0
+Providers,NAME,0,0,0,0.0
+Providers,GENDER,0,0,0,0.0
+Providers,SPECIALITY,0,0,0,0.0
+Providers,ADDRESS,0,0,0,0.0
+Providers,CITY,0,0,0,0.0
+Providers,STATE,0,0,0,0.0
+Providers,ZIP,0,0,0,0.0
+Providers,LAT,0,0,0,0.0
+Providers,LON,0,0,0,0.0
+Providers,UTILIZATION,0,0,0,0.0
+Payer Transitions,PATIENT,0,0,0,0.0
+Payer Transitions,START_YEAR,0,0,0,0.0
+Payer Transitions,END_YEAR,0,0,0,0.0
+Payer Transitions,PAYER,0,0,0,0.0
+Payer Transitions,OWNERSHIP,0,236,236,6.21
+Careplans,Id,0,0,0,0.0
+Careplans,START,0,0,0,0.0
+Careplans,STOP,1532,0,1532,43.99
+Careplans,PATIENT,0,0,0,0.0
+Careplans,ENCOUNTER,0,0,0,0.0
+Careplans,CODE,0,0,0,0.0
+Careplans,DESCRIPTION,0,0,0,0.0
+Careplans,REASONCODE,327,0,327,9.39
+Careplans,REASONDESCRIPTION,327,0,327,9.39
+Devices,START,0,0,0,0.0
+Devices,STOP,78,0,78,100.0
+Devices,PATIENT,0,0,0,0.0
+Devices,ENCOUNTER,0,0,0,0.0
+Devices,CODE,0,0,0,0.0
+Devices,DESCRIPTION,0,0,0,0.0
+Devices,UDI,0,0,0,0.0
+Imaging Studies,Id,0,0,0,0.0
+Imaging Studies,DATE,0,0,0,0.0
+Imaging Studies,PATIENT,0,0,0,0.0
+Imaging Studies,ENCOUNTER,0,0,0,0.0
+Imaging Studies,BODYSITE_CODE,0,0,0,0.0
+Imaging Studies,BODYSITE_DESCRIPTION,0,0,0,0.0
+Imaging Studies,MODALITY_CODE,0,0,0,0.0
+Imaging Studies,MODALITY_DESCRIPTION,0,0,0,0.0
+Imaging Studies,SOP_CODE,0,0,0,0.0
+Imaging Studies,SOP_DESCRIPTION,0,0,0,0.0

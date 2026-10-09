@@ -1,0 +1,16 @@
+Dataset,Records,Remaining Duplicates,Missing IDs
+Patients,1171,0,0
+Encounters,53346,0,0
+Conditions,8376,0,N/A
+Observations,299255,0,N/A
+Medications,42989,0,N/A
+Procedures,34981,0,N/A
+Allergies,597,0,N/A
+Immunizations,15478,0,N/A
+Organizations,1119,0,0
+Payers,10,0,0
+Providers,5855,0,0
+Payer Transitions,3801,0,N/A
+Careplans,3483,0,0
+Devices,78,0,N/A
+Imaging Studies,855,0,0
