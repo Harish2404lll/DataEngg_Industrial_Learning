@@ -8,7 +8,7 @@ The datasets used in this project are sourced entirely from **Synthea**, an open
 ### Dataset Source
 
 * **Source:** Synthea
-* **Data Type:** Synthetic Healthcare Data
+* **Data Type:** Realtime Healthcare Data
 * **Format:** CSV
 * **Purpose:** Simulates realistic hospital and patient healthcare records without using real patient information.
 
